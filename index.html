@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>成长之路</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="audio-controls">
+            <button id="toggleBGM" class="audio-btn">
+                <i class="fas fa-music"></i>
+            </button>
+            <button id="toggleSFX" class="audio-btn">
+                <i class="fas fa-volume-up"></i>
+            </button>
+        </div>
+        
+        <audio id="bgMusic" loop>
+            <source src="audio/background.mp3" type="audio/mp3">
+        </audio>
+        <audio id="correctSound">
+            <source src="audio/correct.mp3" type="audio/mp3">
+        </audio>
+        <audio id="clickSound">
+            <source src="audio/click.mp3" type="audio/mp3">
+        </audio>
+        <audio id="levelUpSound">
+            <source src="audio/levelup.mp3" type="audio/mp3">
+        </audio>
+        
+        <div class="stats">
+            <div class="stat">
+                <div>知识</div>
+                <span id="knowledge">0</span>
+                <div class="progress-bar">
+                    <div id="knowledge-progress" class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="stat">
+                <div>体力</div>
+                <span id="energy">100</span>
+                <div class="progress-bar">
+                    <div id="energy-progress" class="progress-fill" style="width: 100%"></div>
+                </div>
+            </div>
+            <div class="stat">
+                <div>等级</div>
+                <span id="level">1</span>
+            </div>
+            <div class="stat">
+                <div>金币</div>
+                <span id="money">0</span>
+            </div>
+        </div>
+        
+        <div class="skills">
+            <h2>🎯 技能等级</h2>
+            <div class="skill">💻 编程: Lv.<span id="programming">1</span></div>
+            <div class="skill">📝 写作: Lv.<span id="writing">1</span></div>
+            <div class="skill">💪 健身: Lv.<span id="fitness">1</span></div>
+        </div>
+
+        <div class="activities">
+            <h2>🎮 可用活动</h2>
+            <button onclick="study('programming')">💻 学习编程</button>
+            <button onclick="study('writing')">📝 练习写作</button>
+            <button onclick="exercise()">💪 健身</button>
+            <button onclick="rest()">😴 休息</button>
+            <button onclick="work()">💼 打工</button>
+            <button onclick="showGames()">🎮 电竞之路</button>
+        </div>
+        
+        <div class="shop">
+            <h2>🛍️ 商店</h2>
+            <button onclick="buyBook()">📚 购买书籍 (50金币)</button>
+            <button onclick="buyGym()">🏋️‍♂️ 健身卡 (100金币)</button>
+            <button onclick="completeGrowth()" class="special-btn">🌟 完成成长 (10000金币)</button>
+        </div>
+
+        <div class="work-game" id="workGame" style="display: none;">
+            <h2>📝 打字赚钱</h2>
+            <div class="game-stats">
+                <div>剩余时间: <span id="timeLeft">30</span>秒</div>
+                <div>得分: <span id="score">0</span></div>
+            </div>
+            <div class="word-display" id="wordDisplay"></div>
+            <input type="text" id="wordInput" placeholder="在此输入文字..." autocomplete="off">
+            <div class="game-controls">
+                <button onclick="startTypingGame()">开始游戏</button>
+                <button onclick="exitWorkGame()">退出</button>
+            </div>
+        </div>
+
+        <div class="game-selection" id="gameSelection" style="display: none;">
+            <h2>🎮 选择游戏</h2>
+            <div class="game-options">
+                <button onclick="startSnake()">🐍 贪吃蛇</button>
+                <button onclick="startTetris()">🟦 俄罗斯方块</button>
+            </div>
+            <button onclick="exitGameSelection()">返回</button>
+        </div>
+
+        <div class="snake-game" id="snakeGame" style="display: none;">
+            <h2>🐍 贪吃蛇</h2>
+            <div class="game-stats">
+                <div>得分: <span id="snakeScore">0</span></div>
+            </div>
+            <canvas id="snakeCanvas" width="400" height="400"></canvas>
+            <div class="game-controls">
+                <button onclick="exitSnakeGame()">退出</button>
+            </div>
+        </div>
+
+        <div class="tetris-game" id="tetrisGame" style="display: none;">
+            <h2>🟦 俄罗斯方块</h2>
+            <div class="game-stats">
+                <div>得分: <span id="tetrisScore">0</span></div>
+                <div>等级: <span id="tetrisLevel">1</span></div>
+            </div>
+            <canvas id="tetrisCanvas" width="300" height="600"></canvas>
+            <div class="game-controls">
+                <button onclick="exitTetrisGame()">退出</button>
+            </div>
+        </div>
+
+        <div class="status-message" id="message"></div>
+
+        <div class="game-info" id="gameInfo" style="display: none;">
+            <div class="info-content">
+                <h2 id="gameInfoTitle"></h2>
+                <div class="info-details">
+                    <div class="info-section">
+                        <h3>游戏说明</h3>
+                        <p id="gameDescription"></p>
+                    </div>
+                    <div class="info-section">
+                        <h3>操作方式</h3>
+                        <ul id="gameControls"></ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>游戏规则</h3>
+                        <ul id="gameRules"></ul>
+                    </div>
+                </div>
+                <div class="info-buttons">
+                    <button id="startGameBtn">开始游戏</button>
+                    <button onclick="closeGameInfo()">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html> 
